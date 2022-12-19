@@ -11,7 +11,8 @@ def generate_sha256(directory):
     pool = ThreadPoolExecutor(os.cpu_count()-1)
     for file in files:
         path = f"{directory}/{file}"
-        futures.append(pool.submit(sha256_worker, path))
+        if os.path.isfile(path):
+            futures.append(pool.submit(sha256_worker, path))
     pool.shutdown(wait=True)
     return futures
 
